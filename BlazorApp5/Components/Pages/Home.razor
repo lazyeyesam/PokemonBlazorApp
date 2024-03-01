@@ -1,0 +1,53 @@
+﻿@page "/"
+@rendermode InteractiveServer
+
+<PageTitle>Home</PageTitle>
+
+<div class="d-flex justify-content-between">
+    <div>
+        <h3>Pokemon</h3>
+    </div>
+    <div>
+        <a @onclick="ShowAddPokemon" class="btn btn-primary">Add Pokemon</a>
+    </div>
+</div>
+
+
+@if (showAdd)
+{
+    <AddPokemon OnPokemonAdded="PokemonChanged" />
+}
+@if (showEdit)
+{
+    <EditPokemon OnPokemonChanged="PokemonChanged" @ref="editPokemon" />
+}
+
+<PokemonList OnEditClicked="ShowEditPokemon" @ref="pokemonList"/>
+
+@code{
+    private PokemonList pokemonList;
+    private EditPokemon editPokemon;
+
+    private bool showAdd, showEdit;
+
+    private async Task PokemonChanged()
+    {
+        showEdit = false;
+        await pokemonList.Refresh();
+    }
+
+    private void ShowAddPokemon()
+    {
+        showEdit = false;
+        showAdd = !showAdd;
+    }
+
+    private async Task ShowEditPokemon(Pokemon pokemon)
+    {
+        showEdit = true;
+        showAdd = false;
+
+        await Task.Yield();
+        editPokemon.Edit(pokemon);
+    }
+}

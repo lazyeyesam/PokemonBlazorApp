@@ -1,0 +1,86 @@
+﻿@rendermode InteractiveServer
+@inject DatabaseContext Context
+
+@if (pokemons == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Type</th>
+                <th scope="col">Total</th>
+                <th scope="col">HP</th>
+                <th scope="col">Attack</th>
+                <th scope="col">Defence</th>
+                <th scope="col">Speed</th>
+                <th scope="col">Generation</th>
+                <th scope="col">Legendary</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pokemon in pokemons)
+            {
+                <tr>
+                    <td>@pokemon.Id</td>
+                    <td>@pokemon.Name</td>
+                    <td>@pokemon.Type</td>
+                    <td>@pokemon.Total</td>
+                    <td>@pokemon.HP</td>
+                    <td>@pokemon.Attack</td>
+                    <td>@pokemon.Defence</td>
+                    <td>@pokemon.Speed</td>
+                    <td>@pokemon.Generation</td>
+                    <td>@pokemon.Legendary</td>
+                    <td>
+                        <button class="btn btn-success" @onclick="() => Edit(pokemon)">Edit</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" @onclick="() => Delete(pokemon)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public EventCallback<Pokemon> OnEditClicked { get; set; }
+
+    private List<Pokemon>? pokemons;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetPokemon();
+    }
+
+    public async Task Refresh()
+    {
+        await GetPokemon();
+        StateHasChanged();
+    }
+
+    private async Task GetPokemon()
+    {
+        pokemons = await Context.Pokemons.OrderByDescending(p => p.Id).ToListAsync();
+    }
+
+    private void Edit(Pokemon pokemon)
+    {
+        OnEditClicked.InvokeAsync(pokemon);
+    }
+
+    private async void Delete(Pokemon pokemon)
+    {
+        Context.Pokemons.Remove(pokemon);
+        await Context.SaveChangesAsync();
+        await Refresh();
+    }
+}
