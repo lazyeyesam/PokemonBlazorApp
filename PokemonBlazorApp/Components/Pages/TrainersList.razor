@@ -17,7 +17,7 @@ else
                     </div>
                 </ColumnOptions>
             </PropertyColumn>
-            <PropertyColumn Property="@(p => p.Companion.Name)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.Companion.Name)" Title="Companion" Sortable="true" />
             <TemplateColumn Title="Edit">
                 <button class="btn btn-success" @onclick="() => Edit(context)">Edit</button>
             </TemplateColumn>
