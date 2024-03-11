@@ -1,29 +1,23 @@
 ﻿@rendermode InteractiveServer
 @inject DatabaseContext Context
 
-@if (pokemons == null)
+@if (trainers == null)
 {
     <p>Loading...</p>
 }
 else
 {
     <div>
-        <QuickGrid Theme="pokemon" Class="table" Items="@FilteredPokemon" Pagination="@pagination">
+        <QuickGrid Theme="pokemon" Class="table" Items="@FilteredTrainers" Pagination="@pagination">
             <PropertyColumn Property="@(p => p.Id)" Sortable="true" />
             <PropertyColumn Property="@(p => p.Name)" Sortable="true">
                 <ColumnOptions>
                     <div class="search-box">
-                        <input type="search" autofocus @bind="nameSearch" @bind:event="oninput" placeholder="Pokemon name..." />
+                        <input type="search" autofocus @bind="nameSearch" @bind:event="oninput" placeholder="Trainer name..." />
                     </div>
                 </ColumnOptions>
             </PropertyColumn>
-            <PropertyColumn Property="@(p => p.Total)" Sortable="true" />
-            <PropertyColumn Property="@(p => p.HP)" Sortable="true" />
-            <PropertyColumn Property="@(p => p.Attack)" Sortable="true" />
-            <PropertyColumn Property="@(p => p.Defence)" Sortable="true" />
-            <PropertyColumn Property="@(p => p.Speed)" Sortable="true" />
-            <PropertyColumn Property="@(p => p.Generation)" Sortable="true" />
-            <PropertyColumn Property="@(p => p.Legendary)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.Companion.Name)" Sortable="true" />
             <TemplateColumn Title="Edit">
                 <button class="btn btn-success" @onclick="() => Edit(context)">Edit</button>
             </TemplateColumn>
@@ -41,17 +35,17 @@ else
     private string nameSearch;
 
     [Parameter]
-    public EventCallback<Pokemon> OnEditClicked { get; set; }
+    public EventCallback<Trainer> OnEditClicked { get; set; }
 
     [Parameter]
-    public EventCallback<Pokemon> OnDeleteClicked { get; set; }
+    public EventCallback<Trainer> OnDeleteClicked { get; set; }
 
-    private IQueryable<Pokemon>? pokemons;
-    private IQueryable<Pokemon>? FilteredPokemon
+    private IQueryable<Trainer>? trainers;
+    private IQueryable<Trainer>? FilteredTrainers
     {
         get
         {
-            IQueryable<Pokemon>? filtered = pokemons;
+            IQueryable<Trainer>? filtered = trainers;
             if (!string.IsNullOrEmpty(nameSearch))
             {
                 filtered = filtered?.Where(c => c.Name.Contains(nameSearch, StringComparison.CurrentCultureIgnoreCase));
@@ -63,31 +57,31 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        await GetPokemon();
+        await GetTrainers();
     }
 
     public async Task Refresh()
     {
-        await GetPokemon();
+        await GetTrainers();
         StateHasChanged();
     }
 
-    private async Task GetPokemon()
+    private async Task GetTrainers()
     {
-        pokemons = (await Context.Pokemons.ToListAsync()).AsQueryable();
+        trainers = (await Context.Trainers.Include(t => t.Companion).ToListAsync()).AsQueryable();
     }
 
-    private void Edit(Pokemon pokemon)
+    private void Edit(Trainer trainer)
     {
-        OnEditClicked.InvokeAsync(pokemon);
+        OnEditClicked.InvokeAsync(trainer);
     }
 
-    private async void Delete(Pokemon pokemon)
+    private async void Delete(Trainer trainer)
     {
-        Context.Pokemons.Remove(pokemon);
+        Context.Trainers.Remove(trainer);
         await Context.SaveChangesAsync();
         await Refresh();
 
-        await OnDeleteClicked.InvokeAsync(pokemon);
+        await OnDeleteClicked.InvokeAsync(trainer);
     }
 }

@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/trainers"
 @rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
@@ -8,38 +8,37 @@
         <h3>Pokemon</h3>
     </div>
     <div>
-        <a @onclick="ShowAddPokemon" class="btn btn-primary">Add Pokemon</a>
+        <a @onclick="ShowAdd" class="btn btn-primary">Add Trainer</a>
     </div>
 </div>
 
 @if (showForm)
 {
-    <PokemonForm OnSaved="PokemonSaved" Model="pokemon" />
+    <TrainersForm OnSaved="PokemonSaved" Model="trainer" />
 }
 
-<PokemonList OnEditClicked="ShowEditPokemon" OnDeleteClicked="CloseForm" @ref="pokemonList"/>
+<TrainersList OnEditClicked="ShowEdit" OnDeleteClicked="CloseForm" @ref="trainersList" />
 
-@code{
-    private PokemonList pokemonList;
-    private Pokemon pokemon = new Pokemon();
-
+@code {
+    private TrainersList trainersList;
+    private Trainer trainer;
     private bool showForm;
 
     private async Task PokemonSaved()
     {
         showForm = false;
-        await pokemonList.Refresh();
+        await trainersList.Refresh();
     }
 
-    private async void ShowAddPokemon()
+    private async void ShowAdd()
     {
-        pokemon = new Pokemon();
+        trainer = new Trainer();
         await ShowForm();
     }
 
-    private async Task ShowEditPokemon(Pokemon editPokemon)
+    private async Task ShowEdit(Trainer editTrainer)
     {
-        pokemon = editPokemon;
+        trainer = editTrainer;
         await ShowForm();
     }
 

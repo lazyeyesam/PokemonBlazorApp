@@ -19,32 +19,32 @@
                 </div>
                 <div class="col-md-3">
                     <label for="total" class="form-label">Total</label>
-                    <InputNumber class="form-control" placeholder="Total" @bind-Value="Model.Total" />
+                    <InputNumber class="form-control" @bind-Value="Model.Total" />
                     <ValidationMessage For="@(() => Model.Total)" />
                 </div>
                 <div class="col-md-3">
                     <label for="hp" class="form-label">HP</label>
-                    <InputNumber class="form-control" placeholder="HP" @bind-Value="Model.HP" />
+                    <InputNumber class="form-control" @bind-Value="Model.HP" />
                     <ValidationMessage For="@(() => Model.HP)" />
                 </div>
                 <div class="col-md-3">
                     <label for="attack" class="form-label">Attack</label>
-                    <InputNumber class="form-control" placeholder="Attack" @bind-Value="Model.Attack" />
+                    <InputNumber class="form-control" @bind-Value="Model.Attack" />
                     <ValidationMessage For="@(() => Model.Attack)" />
                 </div>
                 <div class="col-md-3">
                     <label for="defence" class="form-label">Defence</label>
-                    <InputNumber class="form-control" placeholder="Defence" @bind-Value="Model.Defence" />
+                    <InputNumber class="form-control" @bind-Value="Model.Defence" />
                     <ValidationMessage For="@(() => Model.Defence)" />
                 </div>
                 <div class="col-md-3">
                     <label for="speed" class="form-label">Speed</label>
-                    <InputNumber class="form-control" placeholder="Speed" @bind-Value="Model.Speed" />
+                    <InputNumber class="form-control" @bind-Value="Model.Speed" />
                     <ValidationMessage For="@(() => Model.Speed)" />
                 </div>
                 <div class="col-md-3">
                     <label for="generation" class="form-label">Generation</label>
-                    <InputNumber class="form-control" placeholder="Generation" @bind-Value="Model.Generation" />
+                    <InputNumber class="form-control" @bind-Value="Model.Generation" />
                     <ValidationMessage For="@(() => Model.Generation)" />
                 </div>
                 <div class="col-md-3">
@@ -62,7 +62,7 @@
 @code {
 
     [Parameter]
-    public EventCallback<bool> OnPokemonSaved { get; set; }
+    public EventCallback<bool> OnSaved { get; set; }
 
     [Parameter]
     public Pokemon Model
@@ -88,6 +88,6 @@
             Context.Pokemons.Update(Model);
 
         await Context.SaveChangesAsync();
-        await OnPokemonSaved.InvokeAsync();
+        await OnSaved.InvokeAsync();
     }
 }
