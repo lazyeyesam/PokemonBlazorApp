@@ -12,42 +12,41 @@
     </div>
 </div>
 
-
-@if (showAdd)
+@if (showForm)
 {
-    <AddPokemon OnPokemonAdded="PokemonChanged" />
-}
-@if (showEdit)
-{
-    <EditPokemon OnPokemonChanged="PokemonChanged" @ref="editPokemon" />
+    <PokemonForm OnPokemonSaved="PokemonSaved" Model="pokemon" @ref="pokemonForm" />
 }
 
 <PokemonList OnEditClicked="ShowEditPokemon" @ref="pokemonList"/>
 
 @code{
     private PokemonList pokemonList;
-    private EditPokemon editPokemon;
+    private PokemonForm pokemonForm; 
+    private Pokemon pokemon = new Pokemon();
 
-    private bool showAdd, showEdit;
+    private bool showForm;
 
-    private async Task PokemonChanged()
+    private async Task PokemonSaved()
     {
-        showEdit = false;
+        showForm = false;
         await pokemonList.Refresh();
     }
 
-    private void ShowAddPokemon()
+    private async void ShowAddPokemon()
     {
-        showEdit = false;
-        showAdd = !showAdd;
+        pokemon = new Pokemon();
+        await ShowForm();
     }
 
-    private async Task ShowEditPokemon(Pokemon pokemon)
+    private async Task ShowEditPokemon(Pokemon editPokemon)
     {
-        showEdit = true;
-        showAdd = false;
+        pokemon = editPokemon;
+        await ShowForm();
+    }
 
+    private async Task ShowForm()
+    {
+        showForm = true;
         await Task.Yield();
-        editPokemon.Edit(pokemon);
     }
 }

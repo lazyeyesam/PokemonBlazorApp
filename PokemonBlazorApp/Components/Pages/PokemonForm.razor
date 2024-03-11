@@ -1,0 +1,93 @@
+﻿@rendermode InteractiveServer
+@inject DatabaseContext Context
+
+<div class="card">
+    <div class="card-body bg-light">
+        <h4 class="card-title">@(Model.Id == 0 ? "Add Pokemon" : "Edit Pokemon")</h4>
+        <EditForm OnValidSubmit="Submit" EditContext="context">
+            <DataAnnotationsValidator />
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label for="name" class="form-label">Name</label>
+                    <InputText class="form-control" placeholder="Name" @bind-Value="Model.Name" />
+                    <ValidationMessage For="@(() => Model.Name)" />
+                </div>
+                <div class="col-md-3">
+                    <label for="type" class="form-label">Type</label>
+                    <InputText class="form-control" placeholder="Type" @bind-Value="Model.Type" />
+                    <ValidationMessage For="@(() => Model.Type)" />
+                </div>
+                <div class="col-md-3">
+                    <label for="total" class="form-label">Total</label>
+                    <InputNumber class="form-control" placeholder="Total" @bind-Value="Model.Total" />
+                    <ValidationMessage For="@(() => Model.Total)" />
+                </div>
+                <div class="col-md-3">
+                    <label for="hp" class="form-label">HP</label>
+                    <InputNumber class="form-control" placeholder="HP" @bind-Value="Model.HP" />
+                    <ValidationMessage For="@(() => Model.HP)" />
+                </div>
+                <div class="col-md-3">
+                    <label for="attack" class="form-label">Attack</label>
+                    <InputNumber class="form-control" placeholder="Attack" @bind-Value="Model.Attack" />
+                    <ValidationMessage For="@(() => Model.Attack)" />
+                </div>
+                <div class="col-md-3">
+                    <label for="defence" class="form-label">Defence</label>
+                    <InputNumber class="form-control" placeholder="Defence" @bind-Value="Model.Defence" />
+                    <ValidationMessage For="@(() => Model.Defence)" />
+                </div>
+                <div class="col-md-3">
+                    <label for="speed" class="form-label">Speed</label>
+                    <InputNumber class="form-control" placeholder="Speed" @bind-Value="Model.Speed" />
+                    <ValidationMessage For="@(() => Model.Speed)" />
+                </div>
+                <div class="col-md-3">
+                    <label for="generation" class="form-label">Generation</label>
+                    <InputNumber class="form-control" placeholder="Generation" @bind-Value="Model.Generation" />
+                    <ValidationMessage For="@(() => Model.Generation)" />
+                </div>
+                <div class="col-md-3">
+                    <InputCheckbox class="form-check-input" @bind-Value="Model.Legendary" />
+                    <label for="legendary" class="form-label">Is Legendary?</label>
+                </div>
+            </div>
+            <div class="d-grid col-3 float-end">
+                <button type="submit" class="btn btn-primary">@(Model.Id == 0 ? "Add Pokemon" : "Save Changes")</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public EventCallback<bool> OnPokemonSaved { get; set; }
+
+    [Parameter]
+    public Pokemon Model
+    {
+        get
+        {
+            return model;
+        }
+        set
+        {
+            model = value ?? new Pokemon();
+            context = new(model);
+        }
+    }
+    private Pokemon model;
+    private EditContext context;
+
+    private async Task Submit()
+    {
+        if (Model.Id == 0)
+            Context.Pokemons.Add(Model);
+        else
+            Context.Pokemons.Update(Model);
+
+        await Context.SaveChangesAsync();
+        await OnPokemonSaved.InvokeAsync();
+    }
+}
