@@ -13,7 +13,7 @@
                     <ValidationMessage For="@(() => Model.Name)" />
                 </div>
                 <div class="col-md-3">
-                    <label for="type" class="form-label">Type</label>
+                    <label for="type" class="form-label">Companion</label>
                     <InputSelect class="form-select" placeholder="Companion" @bind-Value="companionId">
                         @foreach (var pokemon in pokemons)
                         {
