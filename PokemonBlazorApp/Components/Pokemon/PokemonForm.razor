@@ -4,8 +4,7 @@
 <div class="card">
     <div class="card-body bg-light">
         <h4 class="card-title">@(Model.Id == 0 ? "Add Pokemon" : "Edit Pokemon")</h4>
-        <EditForm OnValidSubmit="Submit" EditContext="context">
-            <AntiforgeryToken />
+        <EditForm OnValidSubmit="Submit" EditContext="editContext">
             <DataAnnotationsValidator />
             <div class="row g-3">
                 <div class="col-md-3">
@@ -75,11 +74,11 @@
         set
         {
             model = value ?? new Pokemon();
-            context = new(model);
+            editContext = new(model);
         }
     }
     private Pokemon model;
-    private EditContext context;
+    private EditContext editContext;
 
     private async Task Submit()
     {

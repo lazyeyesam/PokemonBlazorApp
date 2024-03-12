@@ -1,5 +1,9 @@
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
 using PokemonBlazorApp.Components;
+using PokemonBlazorApp.Components.Account;
 using PokemonBlazorApp.Context;
+using PokemonBlazorApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +11,23 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddCascadingAuthenticationState();
+builder.Services.AddScoped<IdentityUserAccessor>();
+builder.Services.AddScoped<IdentityRedirectManager>();
+builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultSignInScheme = IdentityConstants.ApplicationScheme;
+})
+.AddIdentityCookies();
+
 builder.Services.AddDbContext<DatabaseContext>();
+
+builder.Services.AddIdentityCore<User>()
+    .AddEntityFrameworkStores<DatabaseContext>()
+    .AddSignInManager();
 
 var app = builder.Build();
 
@@ -26,5 +46,7 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+app.MapAdditionalAccountRoutes();
 
 app.Run();

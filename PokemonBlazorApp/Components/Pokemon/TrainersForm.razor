@@ -4,8 +4,7 @@
 <div class="card">
     <div class="card-body bg-light">
         <h4 class="card-title">@(Model.Id == 0 ? "Add Trainer" : "Edit Trainer")</h4>
-        <EditForm OnValidSubmit="Submit" EditContext="context">
-            <AntiforgeryToken />
+        <EditForm OnValidSubmit="Submit" EditContext="editContext">
             <DataAnnotationsValidator />
             <div class="row g-3">
                 <div class="col-md-3">
@@ -45,8 +44,10 @@
         set
         {
             model = value ?? new Trainer();
-            companionId = model.Companion is not null ? model.Companion.Id : 0;
-            context = new(model);
+            if (model.Companion is null)
+                model.Companion = new Pokemon();
+            companionId = model.Companion.Id;
+            editContext = new(model);
         }
     }
 
@@ -56,7 +57,7 @@
     }
 
     private Trainer model;
-    private EditContext context;
+    private EditContext editContext;
     private List<Pokemon> pokemons;
     private int companionId;
 
