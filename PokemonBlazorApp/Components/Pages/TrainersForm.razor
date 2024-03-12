@@ -5,6 +5,7 @@
     <div class="card-body bg-light">
         <h4 class="card-title">@(Model.Id == 0 ? "Add Trainer" : "Edit Trainer")</h4>
         <EditForm OnValidSubmit="Submit" EditContext="context">
+            <AntiforgeryToken />
             <DataAnnotationsValidator />
             <div class="row g-3">
                 <div class="col-md-3">
