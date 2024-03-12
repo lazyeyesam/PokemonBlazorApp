@@ -31,7 +31,6 @@
 </div>
 
 @code {
-
     [Parameter]
     public EventCallback<bool> OnSaved { get; set; }
 
@@ -47,18 +46,19 @@
             model = value ?? new Trainer();
             companionId = model.Companion is not null ? model.Companion.Id : 0;
             context = new(model);
-            GetPokemon();
         }
     }
+
+    protected override async Task OnInitializedAsync()
+    {
+        pokemons = await Context.Pokemons.OrderBy(p => p.Name).ToListAsync();
+    }
+
     private Trainer model;
     private EditContext context;
     private List<Pokemon> pokemons;
     private int companionId;
 
-    private async Task GetPokemon()
-    {
-        pokemons = await Context.Pokemons.OrderBy(p => p.Name).ToListAsync();
-    }
 
     private async Task Submit()
     {
