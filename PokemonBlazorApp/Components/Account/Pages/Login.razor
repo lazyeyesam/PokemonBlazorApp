@@ -21,12 +21,12 @@
             <div class="row g-3">
                 <div class="col-md-6">
                     <label for="email" class="form-label">Email</label>
-                    <InputText @bind-Value="Model.Email" class="form-control" aria-required="true" placeholder="name@example.com" />
+                    <InputText @bind-Value="Model.Email" class="form-control" placeholder="name@example.com" />
                     <ValidationMessage For="() => Model.Email" />
                 </div>
                 <div class="col-md-6">
                     <label for="password" class="form-label">Password</label>
-                    <InputText type="password" @bind-Value="Model.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Password" />
+                    <InputText type="password" @bind-Value="Model.Password" class="form-control" placeholder="Password" />
                     <ValidationMessage For="() => Model.Password" />
                 </div>
                 <div class="col-md-2">
