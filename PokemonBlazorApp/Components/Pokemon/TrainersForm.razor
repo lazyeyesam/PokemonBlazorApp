@@ -7,12 +7,12 @@
         <EditForm OnValidSubmit="Submit" EditContext="editContext">
             <DataAnnotationsValidator />
             <div class="row g-3">
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <label for="name" class="form-label">Name</label>
                     <InputText class="form-control" placeholder="Name" @bind-Value="Model.Name" />
                     <ValidationMessage For="@(() => Model.Name)" />
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <label for="type" class="form-label">Companion</label>
                     <InputSelect class="form-select" placeholder="Companion" @bind-Value="companionId">
                         @foreach (var pokemon in pokemons)
@@ -22,9 +22,9 @@
                     </InputSelect>
                     <ValidationMessage For="@(() => Model.Companion)" />
                 </div>
-            </div>
-            <div class="d-grid col-3 float-end">
-                <button type="submit" class="btn btn-primary">@(Model.Id == 0 ? "Add Trainer" : "Save Changes")</button>
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary float-end">@(Model.Id == 0 ? "Add Trainer" : "Save Changes")</button>
+                </div>
             </div>
         </EditForm>
     </div>
@@ -70,7 +70,7 @@
             Context.Trainers.Add(Model);
         else
             Context.Trainers.Update(Model);
-        
+
         await Context.SaveChangesAsync();
         await OnSaved.InvokeAsync();
     }

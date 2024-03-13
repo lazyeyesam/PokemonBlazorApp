@@ -11,29 +11,30 @@
 @inject IdentityRedirectManager RedirectManager
 
 <PageTitle>Log in</PageTitle>
+<StatusMessage Message="@errorMessage" />
 
 <div class="card">
     <div class="card-body bg-light">
         <h4 class="card-title">Login</h4>
-        <StatusMessage Message="@errorMessage" />
         <EditForm OnValidSubmit="LoginUser" Model="Model" FormName="loginForm">
             <DataAnnotationsValidator />
             <div class="row g-3">
-                <div class="col-md-3">
-                    <label for="name" class="form-label">Email</label>
-                    <InputText class="form-control" placeholder="Email" @bind-Value="Model.Email" />
-                    <ValidationMessage For="@(() => Model.Email)" />
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email</label>
+                    <InputText @bind-Value="Model.Email" class="form-control" aria-required="true" placeholder="name@example.com" />
+                    <ValidationMessage For="() => Model.Email" />
                 </div>
-                <div class="col-md-3">
-                    <label for="name" class="form-label">Password</label>
-                    <InputText type="password" class="form-control" placeholder="Email" @bind-Value="Model.Password" />
-                    <ValidationMessage For="@(() => Model.Password)" />
+                <div class="col-md-6">
+                    <label for="password" class="form-label">Password</label>
+                    <InputText type="password" @bind-Value="Model.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Password" />
+                    <ValidationMessage For="() => Model.Password" />
                 </div>
-            </div>
-            <div class="row g-3 mt-1">
-                <div class="col-md-3">
-                    <button type="submit" class="btn btn-primary">Login</button>
-                    <a href="@(NavigationManager.ToAbsoluteUri("Account/Register"))" class="btn btn-success">Register</a>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
+
+                </div>
+                <div class="col-md-2">
+                    <a href="@(NavigationManager.ToAbsoluteUri("Account/Register"))" class="btn btn-success w-100">Register</a>
                 </div>
             </div>
         </EditForm>

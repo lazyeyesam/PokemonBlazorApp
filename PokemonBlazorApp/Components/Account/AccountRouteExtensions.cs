@@ -15,7 +15,7 @@ namespace PokemonBlazorApp.Components.Account
             accountGroup.MapGet("/Logout", async (
                ClaimsPrincipal user,
                SignInManager<User> signInManager,
-               string? returnUrl = "") =>
+               string? returnUrl) =>
             {
                 await signInManager.SignOutAsync();
                 return TypedResults.LocalRedirect($"~/{returnUrl}");

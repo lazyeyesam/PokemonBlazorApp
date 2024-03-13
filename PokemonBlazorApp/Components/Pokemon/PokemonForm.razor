@@ -47,14 +47,15 @@
                     <InputNumber class="form-control" @bind-Value="Model.Generation" />
                     <ValidationMessage For="@(() => Model.Generation)" />
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-12">
                     <InputCheckbox class="form-check-input" @bind-Value="Model.Legendary" />
                     <label for="legendary" class="form-label">Is Legendary?</label>
                 </div>
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary float-end">@(Model.Id == 0 ? "Add Pokemon" : "Save Changes")</button>
+                </div>
             </div>
-            <div class="d-grid col-3 float-end">
-                <button type="submit" class="btn btn-primary">@(Model.Id == 0 ? "Add Pokemon" : "Save Changes")</button>
-            </div>
+            
         </EditForm>
     </div>
 </div>
