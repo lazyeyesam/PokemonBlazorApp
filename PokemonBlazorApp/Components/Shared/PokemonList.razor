@@ -2,7 +2,7 @@
 @inject DatabaseContext DbContext
 @inject NavigationManager NavigationManager
 
-@if (pokemons == null)
+@if (Pokemons == null)
 {
     <p>Loading...</p>
 }
@@ -50,12 +50,14 @@ else
     [Parameter]
     public EventCallback<Pokemon> OnDeleteClicked { get; set; }
 
-    private IQueryable<Pokemon>? pokemons;
+    [Parameter]
+    public IQueryable<Pokemon>? Pokemons { get; set; }
+
     private IQueryable<Pokemon>? FilteredPokemon
     {
         get
         {
-            IQueryable<Pokemon>? filtered = pokemons;
+            IQueryable<Pokemon>? filtered = Pokemons;
             if (!string.IsNullOrEmpty(nameSearch))
             {
                 filtered = filtered?.Where(c => c.Name.Contains(nameSearch, StringComparison.CurrentCultureIgnoreCase));
@@ -65,25 +67,9 @@ else
         }
     }
 
-    protected override async Task OnInitializedAsync()
-    {
-        await GetPokemon();
-    }
-
     public void ShowInfo(Pokemon pokemon)
     {
         NavigationManager.NavigateTo($"/Info/{pokemon.Id}");
-    }
-
-    public async Task Refresh()
-    {
-        await GetPokemon();
-        StateHasChanged();
-    }
-
-    private async Task GetPokemon()
-    {
-        pokemons = (await DbContext.Pokemons.ToListAsync()).AsQueryable();
     }
 
     private void Edit(Pokemon pokemon)
@@ -95,8 +81,6 @@ else
     {
         DbContext.Pokemons.Remove(pokemon);
         await DbContext.SaveChangesAsync();
-        await Refresh();
-
         await OnDeleteClicked.InvokeAsync(pokemon);
     }
 }

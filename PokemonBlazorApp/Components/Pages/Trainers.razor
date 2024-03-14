@@ -1,5 +1,6 @@
 ﻿@page "/Trainers"
 @rendermode InteractiveServer
+@inject DatabaseContext DbContext
 @attribute [Authorize]
 
 <PageTitle>Trainers</PageTitle>
@@ -15,43 +16,47 @@
 
 @if (showForm)
 {
-    <TrainersForm OnSaved="PokemonSaved" Model="trainer" />
+    <TrainersForm OnSaved="TrainerSaved" Model="trainer" />
 }
 
-<TrainersList OnEditClicked="ShowEdit" OnDeleteClicked="CloseForm" @ref="trainersList" />
+<TrainersList OnEditClicked="ShowEdit" OnDeleteClicked="OnDelete" Trainers="trainers" />
 
 @code {
-    private TrainersList trainersList;
-    private Trainer trainer;
+    private Trainer? trainer;
     private bool showForm;
+    private IQueryable<Trainer>? trainers;
 
-    private async Task PokemonSaved()
+    protected override async Task OnInitializedAsync()
+    {
+        await GetTrainers();
+    }
+
+    private async Task TrainerSaved()
     {
         showForm = false;
-        await trainersList.Refresh();
+        await GetTrainers();
+    }
+
+    private async Task GetTrainers()
+    {
+        trainers = (await DbContext.Trainers.Include(t => t.Companion).ToListAsync()).AsQueryable();
     }
 
     private async void ShowAdd()
     {
         trainer = new Trainer();
-        await ShowForm();
+        showForm = true;
     }
 
     private async Task ShowEdit(Trainer editTrainer)
     {
         trainer = editTrainer;
-        await ShowForm();
+        showForm = true;
     }
 
-    private async Task CloseForm()
+    private async Task OnDelete()
     {
         showForm = false;
-        await Task.Yield();
-    }
-
-    private async Task ShowForm()
-    {
-        showForm = true;
-        await Task.Yield();
+        await GetTrainers();
     }
 }

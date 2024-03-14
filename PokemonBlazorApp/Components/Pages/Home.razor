@@ -1,5 +1,6 @@
 ﻿@page "/"
 @rendermode InteractiveServer
+@inject DatabaseContext DbContext
 
 <PageTitle>Pokemon</PageTitle>
 
@@ -17,41 +18,45 @@
     <PokemonForm OnSaved="PokemonSaved" Model="pokemon" />
 }
 
-<PokemonList OnEditClicked="ShowEditPokemon" OnDeleteClicked="CloseForm" @ref="pokemonList"/>
+<PokemonList OnEditClicked="ShowEditPokemon" OnDeleteClicked="OnDelete" Pokemons="pokemons"/>
 
 @code{
-    private PokemonList pokemonList;
     private Pokemon pokemon = new Pokemon();
-
+    private IQueryable<Pokemon>? pokemons;
     private bool showForm;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetPokemon();
+    }
 
     private async Task PokemonSaved()
     {
         showForm = false;
-        await pokemonList.Refresh();
+        await GetPokemon();
     }
 
-    private async void ShowAddPokemon()
+    private async Task GetPokemon()
+    {
+        pokemons = (await DbContext.Pokemons.ToListAsync()).AsQueryable();
+    }
+
+    private void ShowAddPokemon()
     {
         pokemon = new Pokemon();
-        await ShowForm();
+        showForm = true;
     }
 
-    private async Task ShowEditPokemon(Pokemon editPokemon)
+    private void ShowEditPokemon(Pokemon editPokemon)
     {
         pokemon = editPokemon;
-        await ShowForm();
+        showForm = true;
     }
 
-    private async Task CloseForm()
+    private async Task OnDelete()
     {
         showForm = false;
-        await Task.Yield();
+        await GetPokemon();
     }
 
-    private async Task ShowForm()
-    {
-        showForm = true;
-        await Task.Yield();
-    }
 }
