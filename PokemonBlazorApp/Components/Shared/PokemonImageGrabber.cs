@@ -4,9 +4,11 @@ namespace PokemonBlazorApp.Components.Shared
 {
     public class PokemonImageGrabber
     {
-        public string? GetImageUrl(Pokemon pokemon)
+        private const string NOT_FOUND = "img/notfound.png";
+
+        public string GetImageUrl(Pokemon pokemon)
         {
-            if (pokemon is null) return null;
+            if (pokemon is null) return NOT_FOUND;
 
             var name = pokemon.Name.Split("Mega")[0]
                 .Replace("'", string.Empty)
