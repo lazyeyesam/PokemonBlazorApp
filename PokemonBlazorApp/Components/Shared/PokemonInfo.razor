@@ -1,0 +1,80 @@
+﻿@inject PokemonImageGrabber ImageGrabber
+
+<div class="row g-0">
+    <div class="col-md-3 me-1">
+        <img src="@imageUrl" class="img-fluid img-thumbnail rounded-start" alt="@Pokemon.Name" />
+    </div>
+    <div class="col-md-8">
+        <div class="card mb-3">
+            <div class="card-body bg-light">
+                <h5 class="card-title">@Pokemon.Name</h5>
+                <p>
+                    <span class="badge rounded-pill bg-primary">@Pokemon.Type</span>&nbsp;
+                    <span class="badge rounded-pill bg-success">Generation @Pokemon.Generation</span>&nbsp;
+                    @if (Pokemon.Legendary)
+                    {
+                        <span class="badge rounded-pill bg-warning">Legendary</span>
+                    }
+                </p>
+               <div class="row g-2 mb-1">
+                    <div class="col-md-2">HP:</div>
+                    <div class="col-md-9">
+                        <div class="progress progress-lg" style="height: 30px">
+                            <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="@Pokemon.HP" style="width: @(Pokemon.HP*100/255)%" aria-valuemin="0" aria-valuemax="255"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">@Pokemon.HP</div>
+                </div>
+                <div class="row g-2 mb-1">
+                    <div class="col-md-2">Attack:</div>
+                    <div class="col-md-9">
+                        <div class="progress progress-lg" style="height: 30px">
+                            <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="@Pokemon.Attack" style="width: @(Pokemon.Attack*100/255)%" aria-valuemin="0" aria-valuemax="255"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">@Pokemon.Attack</div>
+                </div>
+                <div class="row g-2 mb-1">
+                    <div class="col-md-2">Defence:</div>
+                    <div class="col-md-9">
+                        <div class="progress progress-lg" style="height: 30px">
+                            <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="@Pokemon.Defence" style="width: @(Pokemon.Defence*100/255)%" aria-valuemin="0" aria-valuemax="255"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">@Pokemon.Defence</div>
+                </div>
+                <div class="row g-2 mb-1">
+                    <div class="col-md-2">Speed:</div>
+                    <div class="col-md-9">
+                        <div class="progress progress-lg" style="height: 30px">
+                            <div class="progress-bar bg-success" role="progressbar" aria-valuenow="@Pokemon.Speed" style="width: @(Pokemon.Speed*100/255)%" aria-valuemin="0" aria-valuemax="255"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">@Pokemon.Speed</div>
+                </div>
+                <div class="row g-2 mb-1">
+                    <div class="col-md-2">Total:</div>
+                    <div class="col-md-9">
+                        <div class="progress progress-lg" style="height: 30px">
+                            <div class="progress-bar bg-info" role="progressbar" aria-valuenow="@Pokemon.Total" style="width: @(Pokemon.Total*100/800)%" aria-valuemin="0" aria-valuemax="800"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">@Pokemon.Total</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Pokemon Pokemon { get; set; }
+
+    private string? imageUrl { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        imageUrl = ImageGrabber.GetImageUrl(Pokemon);
+        base.OnParametersSet();
+    }
+}

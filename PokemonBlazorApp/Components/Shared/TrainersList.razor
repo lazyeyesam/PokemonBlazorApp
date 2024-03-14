@@ -1,5 +1,5 @@
 ﻿@rendermode InteractiveServer
-@inject DatabaseContext Context
+@inject DatabaseContext DbContext
 
 @if (trainers == null)
 {
@@ -68,7 +68,7 @@ else
 
     private async Task GetTrainers()
     {
-        trainers = (await Context.Trainers.Include(t => t.Companion).ToListAsync()).AsQueryable();
+        trainers = (await DbContext.Trainers.Include(t => t.Companion).ToListAsync()).AsQueryable();
     }
 
     private void Edit(Trainer trainer)
@@ -78,8 +78,8 @@ else
 
     private async void Delete(Trainer trainer)
     {
-        Context.Trainers.Remove(trainer);
-        await Context.SaveChangesAsync();
+        DbContext.Trainers.Remove(trainer);
+        await DbContext.SaveChangesAsync();
         await Refresh();
 
         await OnDeleteClicked.InvokeAsync(trainer);

@@ -15,7 +15,7 @@
 @inject IdentityRedirectManager RedirectManager
 
 <PageTitle>Register</PageTitle>
-<StatusMessage Message="@Message" />
+<StatusMessage Message="@statusMessage" IsError="@isError" />
 
 <div class="card">
     <div class="card-body bg-light">
@@ -56,7 +56,8 @@
     [SupplyParameterFromQuery]
     private string? ReturnUrl { get; set; }
 
-    private string? Message => identityErrors is null ? null : string.Join(" ", identityErrors.Select(error => error.Description));
+    private string? statusMessage => identityErrors is null ? null : string.Join(" ", identityErrors.Select(error => error.Description));
+    private bool isError;
 
     public async Task RegisterUser(EditContext editContext)
     {
@@ -69,6 +70,7 @@
         if (!result.Succeeded)
         {
             identityErrors = result.Errors;
+            isError = true;
             return;
         }
 

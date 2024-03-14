@@ -1,5 +1,5 @@
 ﻿@rendermode InteractiveServer
-@inject DatabaseContext Context
+@inject DatabaseContext DbContext
 
 <div class="card">
     <div class="card-body bg-light">
@@ -84,11 +84,11 @@
     private async Task Submit()
     {
         if (Model.Id == 0)
-            Context.Pokemons.Add(Model);
+            DbContext.Pokemons.Add(Model);
         else
-            Context.Pokemons.Update(Model);
+            DbContext.Pokemons.Update(Model);
 
-        await Context.SaveChangesAsync();
+        await DbContext.SaveChangesAsync();
         await OnSaved.InvokeAsync();
     }
 }

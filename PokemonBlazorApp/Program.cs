@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using PokemonBlazorApp.Components;
 using PokemonBlazorApp.Components.Account;
+using PokemonBlazorApp.Components.Shared;
 using PokemonBlazorApp.Context;
 using PokemonBlazorApp.Data;
 
@@ -15,6 +16,8 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
+
+builder.Services.AddScoped<PokemonImageGrabber>();
 
 builder.Services.AddAuthentication(options =>
 {

@@ -1,5 +1,6 @@
 ﻿@rendermode InteractiveServer
-@inject DatabaseContext Context
+@inject DatabaseContext DbContext
+@inject NavigationManager NavigationManager
 
 @if (pokemons == null)
 {
@@ -29,6 +30,9 @@ else
             </TemplateColumn>
             <TemplateColumn Title="Delete">
                 <button class="btn btn-danger" @onclick="() => Delete(context)">Delete</button>
+            </TemplateColumn>
+            <TemplateColumn Title="Info">
+                <button class="btn btn-primary" @onclick="() => ShowInfo(context)">Info</button>
             </TemplateColumn>
         </QuickGrid>
         <Paginator State="@pagination" />
@@ -66,6 +70,11 @@ else
         await GetPokemon();
     }
 
+    public void ShowInfo(Pokemon pokemon)
+    {
+        NavigationManager.NavigateTo($"/Info/{pokemon.Id}");
+    }
+
     public async Task Refresh()
     {
         await GetPokemon();
@@ -74,7 +83,7 @@ else
 
     private async Task GetPokemon()
     {
-        pokemons = (await Context.Pokemons.ToListAsync()).AsQueryable();
+        pokemons = (await DbContext.Pokemons.ToListAsync()).AsQueryable();
     }
 
     private void Edit(Pokemon pokemon)
@@ -84,8 +93,8 @@ else
 
     private async void Delete(Pokemon pokemon)
     {
-        Context.Pokemons.Remove(pokemon);
-        await Context.SaveChangesAsync();
+        DbContext.Pokemons.Remove(pokemon);
+        await DbContext.SaveChangesAsync();
         await Refresh();
 
         await OnDeleteClicked.InvokeAsync(pokemon);

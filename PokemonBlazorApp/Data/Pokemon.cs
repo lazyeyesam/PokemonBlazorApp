@@ -13,27 +13,27 @@ namespace PokemonBlazorApp.Data
         public string Type { get; set; }
 
         [Required]
-        [Range(1, 600, ErrorMessage = "Total must be between 1 and 600")]
+        [Range(1, 800, ErrorMessage = "Total must be between 1 and 800")]
         public int Total { get; set; }
 
         [Required]
-        [Range(1, 200, ErrorMessage = "HP must be between 1 and 200")]
+        [Range(1, 255, ErrorMessage = "HP must be between 1 and 255")]
         public int HP { get; set; }
 
         [Required]
-        [Range(1, 200, ErrorMessage = "Attack must be between 1 and 200")]
+        [Range(1, 255, ErrorMessage = "Attack must be between 1 and 255")]
         public int Attack { get; set; }
 
         [Required]
-        [Range(1, 200, ErrorMessage = "Defence must be between 1 and 200")]
+        [Range(1, 255, ErrorMessage = "Defence must be between 1 and 255")]
         public int Defence { get; set; }
 
         [Required]
-        [Range(1, 200, ErrorMessage = "Speed must be between 1 and 200")]
+        [Range(1, 255, ErrorMessage = "Speed must be between 1 and 255")]
         public int Speed { get; set; }
 
         [Required]
-        [Range(1, 200, ErrorMessage = "Generation must be between 1 and 200")]
+        [Range(1, 10, ErrorMessage = "Generation must be between 1 and 10")]
         public int Generation { get; set; }
 
         [Required]

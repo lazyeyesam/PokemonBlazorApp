@@ -11,7 +11,7 @@
 @inject IdentityRedirectManager RedirectManager
 
 <PageTitle>Log in</PageTitle>
-<StatusMessage Message="@errorMessage" />
+<StatusMessage Message="@statusMessage" IsError="@isError" />
 
 <div class="card">
     <div class="card-body bg-light">
@@ -42,7 +42,8 @@
 </div>
 
 @code {
-    private string? errorMessage;
+    private string? statusMessage;
+    private bool isError;
 
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = default!;
@@ -74,7 +75,8 @@
         }
         else
         {
-            errorMessage = "Error: Invalid login attempt.";
+            statusMessage = "Invalid login attempt.";
+            isError = true;
         }
     }
 

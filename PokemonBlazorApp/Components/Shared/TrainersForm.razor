@@ -1,5 +1,5 @@
 ﻿@rendermode InteractiveServer
-@inject DatabaseContext Context
+@inject DatabaseContext DbContext
 
 <div class="card">
     <div class="card-body bg-light">
@@ -53,7 +53,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        pokemons = await Context.Pokemons.OrderBy(p => p.Name).ToListAsync();
+        pokemons = await DbContext.Pokemons.OrderBy(p => p.Name).ToListAsync();
     }
 
     private Trainer model;
@@ -67,11 +67,11 @@
         Model.Companion = pokemons.Single(p => p.Id == companionId);
 
         if (Model.Id == 0)
-            Context.Trainers.Add(Model);
+            DbContext.Trainers.Add(Model);
         else
-            Context.Trainers.Update(Model);
+            DbContext.Trainers.Update(Model);
 
-        await Context.SaveChangesAsync();
+        await DbContext.SaveChangesAsync();
         await OnSaved.InvokeAsync();
     }
 }

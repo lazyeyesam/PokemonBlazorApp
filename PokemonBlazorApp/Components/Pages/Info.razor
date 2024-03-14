@@ -1,0 +1,66 @@
+﻿@page "/Info/{id:int}"
+@rendermode InteractiveServer
+@inject DatabaseContext DbContext;
+
+<PageTitle>Info - @mainPokemon?.Name</PageTitle>
+
+@if (pokemons is null || mainPokemon is null)
+{
+    <h4>No pokemon found for that id</h4>
+}
+else
+{
+    <div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Pokemon</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@mainPokemon!.Name</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="container mb-1">
+        <PokemonInfo Pokemon="mainPokemon" />
+    </div>
+    <div class="container mb-1">
+        <div class="row g-2">
+            <div class="col-md-3">
+                <label>Compare with:</label>
+                <select class="form-select" placeholder="Choose pokemon" @onchange="OnSelectionChanged" value="@comparisonId">
+                    @foreach (var pokemon in pokemons!)
+                    {
+                        <option value="@pokemon.Id">@pokemon.Name</option>
+                    }
+                </select>
+            </div>
+            
+        </div>
+    </div>
+    @if (comparisonPokemon is not null)
+    {
+        <div class="container">
+            <PokemonInfo Pokemon="comparisonPokemon" />
+        </div>
+    }
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Pokemon? mainPokemon, comparisonPokemon;
+    private int comparisonId;
+    private List<Pokemon>? pokemons;
+
+    protected override async Task OnInitializedAsync()
+    {
+        pokemons = await DbContext.Pokemons.OrderBy(p => p.Name).ToListAsync();
+        mainPokemon = pokemons.SingleOrDefault(p => p.Id == Id);
+    }
+
+    private void OnSelectionChanged(ChangeEventArgs e)
+    {
+        comparisonId = Convert.ToInt32(e?.Value?.ToString());
+        comparisonPokemon = pokemons!.SingleOrDefault(p => p.Id == comparisonId);    
+    }
+}
