@@ -33,6 +33,12 @@ namespace PokemonBlazorApp.Components.Shared
                 .Replace("MeowsticMale", "Meowstic-Male")
                 .Replace("MeowsticFemale", "Meowstic-Female")
                 .Replace(" Forme", "")
+                .Replace("Heat Rotom", "")
+                .Replace("Wash Rotom", "")
+                .Replace("Frost Rotom", "")
+                .Replace("Fan Rotom", "")
+                .Replace("Mow Rotom", "")
+                .Replace(" Jr.", "-jr")
                 .ToLowerInvariant();
 
             var imageUrl = $"https://img.pokemondb.net/artwork/large/{name}.jpg";
