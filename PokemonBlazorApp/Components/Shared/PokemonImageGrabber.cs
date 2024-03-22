@@ -43,7 +43,8 @@ namespace PokemonBlazorApp.Components.Shared
                         .Replace("Frost Rotom", "")
                         .Replace("Fan Rotom", "")
                         .Replace("Mow Rotom", "")
-                        .Replace(" Jr.", "-jr");
+                        .Replace(" Jr.", "-jr")
+                        .Replace("é", "e");
             }
             name = name.ToLowerInvariant();
 
