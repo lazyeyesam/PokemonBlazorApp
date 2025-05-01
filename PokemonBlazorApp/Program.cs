@@ -55,6 +55,7 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
+app.MapAdditionalResetRoutes();
 app.MapAdditionalAccountRoutes();
 
 app.Run();

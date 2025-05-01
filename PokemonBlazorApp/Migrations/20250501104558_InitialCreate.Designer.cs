@@ -11,7 +11,7 @@ using PokemonBlazorApp.Context;
 namespace PokemonBlazorApp.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240312124220_InitialCreate")]
+    [Migration("20250501104558_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

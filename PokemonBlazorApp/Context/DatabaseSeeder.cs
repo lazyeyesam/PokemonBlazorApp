@@ -7,20 +7,37 @@ namespace PokemonBlazorApp.Context
     public class DatabaseSeeder
     {
         private readonly DatabaseContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public DatabaseSeeder(DatabaseContext context)
+        public DatabaseSeeder(DatabaseContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task Seed()
         {
             await _context.Database.MigrateAsync();
 
-            // don't add the pokemon if they already exist
-            if (_context.Pokemons.Any()) return;
+            // don't add the user if they already exist
+            if (!_context.Users.Any())
+            {
+                var adminEmail = "ash@pokemon.com";
+                var adminPassword = "Misty123!";   // make sure password is complex enough
 
-            var pokemonList = new List<Pokemon>()
+                var admin = new User
+                {
+                    UserName = adminEmail,
+                    Email = adminEmail
+                };
+
+                await _userManager.CreateAsync(admin, adminPassword);
+            }
+
+            // don't add the pokemon if they already exist
+            if (!_context.Pokemons.Any())
+            {
+                var pokemonList = new List<Pokemon>()
             {
                 new Pokemon { Name = "Bulbasaur", Type = "Grass", Total = 318, HP = 45, Attack = 49, Defence = 49, Speed = 45, Generation = 1, Legendary = false },
                 new Pokemon { Name = "Ivysaur", Type = "Grass", Total = 405, HP = 60, Attack = 62, Defence = 63, Speed = 60, Generation = 1, Legendary = false },
@@ -843,8 +860,19 @@ namespace PokemonBlazorApp.Context
                 new Pokemon { Name = "Melmetal", Type = "Steel", Total = 600, HP = 135, Attack = 143, Defence = 143, Speed = 34, Generation = 8, Legendary = true }
             };
 
-            _context.Pokemons.AddRange(pokemonList);
-            _context.SaveChanges();
+                _context.Pokemons.AddRange(pokemonList);
+                _context.SaveChanges();
+            }
+
+            // add the trainer if there isn't one
+            if (!_context.Trainers.Any())
+            {
+                var pikachu = _context.Pokemons.Single(pokemon => pokemon.Name == "Pikachu");
+                var trainer = new Trainer { Name = "Ash", Companion = pikachu };
+                _context.Trainers.Add(trainer);
+                _context.SaveChanges();
+            }
+
         }
     };
 }
