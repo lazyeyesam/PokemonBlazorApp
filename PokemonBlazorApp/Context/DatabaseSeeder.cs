@@ -819,7 +819,6 @@ namespace PokemonBlazorApp.Context
                 new Pokemon { Name = "Sandygast", Type = "Ghost", Total = 320, HP = 55, Attack = 55, Defence = 80, Speed = 15, Generation = 7, Legendary = false },
                 new Pokemon { Name = "Palossand", Type = "Ghost", Total = 480, HP = 85, Attack = 75, Defence = 110, Speed = 35, Generation = 7, Legendary = false },
                 new Pokemon { Name = "Pyukumuku", Type = "Water", Total = 410, HP = 55, Attack = 60, Defence = 130, Speed = 5, Generation = 7, Legendary = false },
-                new Pokemon { Name = "Type: Null", Type = "Normal", Total = 480, HP = 95, Attack = 95, Defence = 95, Speed = 595, Generation = 7, Legendary = false },
                 new Pokemon { Name = "Silvally", Type = "Normal", Total = 570, HP = 95, Attack = 95, Defence = 95, Speed = 95, Generation = 7, Legendary = false },
                 new Pokemon { Name = "MiniorMeteor Form", Type = "Rock", Total = 480, HP = 60, Attack = 60, Defence = 100, Speed = 60, Generation = 7, Legendary = false },
                 new Pokemon { Name = "MiniorCore Form", Type = "Rock", Total = 480, HP = 60, Attack = 100, Defence = 60, Speed = 120, Generation = 7, Legendary = false },

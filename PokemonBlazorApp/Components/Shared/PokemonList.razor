@@ -1,6 +1,7 @@
 ﻿@rendermode InteractiveServer
 @inject DatabaseContext DbContext
 @inject NavigationManager NavigationManager
+@inject PokemonImageGrabber ImageGrabber
 
 @if (Pokemons == null)
 {
@@ -11,6 +12,9 @@ else
     <div>
         <QuickGrid Theme="pokemon" Class="table" Items="@FilteredPokemon" Pagination="@pagination">
             <PropertyColumn Property="@(p => p.Id)" Sortable="true" />
+            <TemplateColumn Title="Image">
+                <img src="@ImageGrabber.GetImageUrl(context)" alt="@context.Name" style="height: 50px;" onerror="this.onerror=null;this.src='/img/notfound.png';" />
+            </TemplateColumn>
             <PropertyColumn Property="@(p => p.Name)" Sortable="true">
                 <ColumnOptions>
                     <div class="search-box">
